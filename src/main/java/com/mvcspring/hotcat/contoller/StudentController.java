@@ -1,9 +1,12 @@
 package com.mvcspring.hotcat.contoller;
 
 import com.mvcspring.hotcat.dao.StudentDao;
+import com.mvcspring.hotcat.exception.StandardResponse;
 import com.mvcspring.hotcat.model.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,38 +17,68 @@ public class StudentController {
     private StudentDao dao;
 
     @PostMapping("/save")
-    public Student saveStudent(
+    public ResponseEntity<StandardResponse> saveStudent(
             @RequestParam String id,
             @RequestParam String name,
             @RequestParam String address,
             @RequestParam int marks
     ){
-        return dao.saveStudent(new Student(id,name,address,marks));
+        return new ResponseEntity<>(
+                new StandardResponse(
+                        200,
+                        "Success!",
+                        dao.saveStudent(new Student(id,name,address,marks))
+                ), HttpStatus.CREATED
+        );
     }
 
     @PutMapping("/update")
-    public Student updateStudent(
+    public ResponseEntity<StandardResponse> updateStudent(
             @RequestParam String id,
             @RequestParam String name,
             @RequestParam String address,
             @RequestParam int marks
     ){
-        return dao.updateStudent(new Student(id,name,address,marks));
+        return new ResponseEntity<>(
+                new StandardResponse(
+                        200,
+                        "Updated!",
+                        dao.updateStudent(new Student(id,name,address,marks))
+                ), HttpStatus.OK
+        );
     }
 
     @DeleteMapping("/delete/{id}")
-    public String deleteStudent(@PathVariable String id){
-        return dao.deleteStudent(id);
+    public ResponseEntity<StandardResponse> deleteStudent(@PathVariable String id){
+        return new ResponseEntity<>(
+                new StandardResponse(
+                        200,
+                        "Deleted!",
+                        dao.deleteStudent(id)
+                ), HttpStatus.OK
+        );
     }
 
     @GetMapping("/get/{id}")
-    public Student getStudent(@PathVariable String id){
-        return  dao.getStudent(id);
+    public ResponseEntity<StandardResponse> getStudent(@PathVariable String id){
+        return new ResponseEntity<>(
+                new StandardResponse(
+                        200,
+                        "Found!",
+                        dao.getStudent(id)
+                ), HttpStatus.OK
+        );
     }
 
     @GetMapping("/list/{page}/{size}")
-    public Page getAllstudent(@PathVariable int page,
+    public ResponseEntity<StandardResponse> getAllstudent(@PathVariable int page,
                               @PathVariable int size){
-        return dao.getAllStudents(page,size);
+        return new ResponseEntity<>(
+                new StandardResponse(
+                        200,
+                        "Customer List!",
+                        dao.getAllStudents(page,size)
+                ), HttpStatus.OK
+        );
     }
 }

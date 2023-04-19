@@ -16,7 +16,9 @@ public class StudentDao {
     private StudentRepo repo;
 
     public Student saveStudent(Student student){
+
         return repo.save(student);
+
     }
 
     public Student updateStudent(Student student){
@@ -30,13 +32,13 @@ public class StudentDao {
         return null;
     }
 
-    public String deleteStudent(String id) {
+    public Student deleteStudent(String id) {
         Optional<Student> student = repo.findById(id);
         if (student.isPresent()){
             repo.deleteById(id);
-            return "Student deleted!";
+            return student.get();
         }
-        return "Student not found!";
+        return null;
     }
 
     public Student getStudent(String id) {
