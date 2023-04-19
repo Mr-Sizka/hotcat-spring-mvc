@@ -1,13 +1,12 @@
 package com.mvcspring.hotcat.exception;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class ExceptionHandler {
-    @org.springframework.web.bind.annotation.ExceptionHandler
+    @org.springframework.web.bind.annotation.ExceptionHandler(ClassNotFoundException.class)
     public ResponseEntity<StandardResponse> handleClassNotFoundException(ClassNotFoundException e){
         return new ResponseEntity<>(
                 new StandardResponse(
@@ -18,14 +17,13 @@ public class ExceptionHandler {
         );
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler
-    public ResponseEntity<StandardResponse> handleNullPointException(NullPointerException e){
+    @org.springframework.web.bind.annotation.ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<StandardException> handleUserNotFoundException(NotFoundException e){
         return new ResponseEntity<>(
-                new StandardResponse(
+                new StandardException(
                         404,
-                        "User Not Found!",
-                        e
+                        e.getMessage()
                 ),HttpStatus.NOT_FOUND
-        );
+                );
     }
 }

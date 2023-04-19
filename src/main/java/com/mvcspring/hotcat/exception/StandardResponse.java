@@ -10,6 +10,5 @@ import lombok.NonNull;
 public class StandardResponse {
     private int code;
     private String message;
-    @NonNull
     private Object data;
 }

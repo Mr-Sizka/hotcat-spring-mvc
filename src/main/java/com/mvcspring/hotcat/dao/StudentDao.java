@@ -1,5 +1,6 @@
 package com.mvcspring.hotcat.dao;
 
+import com.mvcspring.hotcat.exception.NotFoundException;
 import com.mvcspring.hotcat.model.Student;
 import com.mvcspring.hotcat.repo.StudentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class StudentDao {
 
     }
 
-    public Student updateStudent(Student student){
+    public Student updateStudent(Student student) throws NotFoundException {
         Optional<Student> tempStudent = repo.findById(student.getId());
         if (tempStudent.isPresent()){
             tempStudent.get().setName(student.getName());
@@ -29,24 +30,24 @@ public class StudentDao {
             tempStudent.get().setMarks(student.getMarks());
             return repo.save(student);
         }
-        return null;
+        throw new NotFoundException("User Not Found!");
     }
 
-    public Student deleteStudent(String id) {
+    public Student deleteStudent(String id) throws NotFoundException {
         Optional<Student> student = repo.findById(id);
         if (student.isPresent()){
             repo.deleteById(id);
             return student.get();
         }
-        return null;
+        throw new NotFoundException("User Not Found!");
     }
 
-    public Student getStudent(String id) {
+    public Student getStudent(String id) throws NotFoundException {
         Optional<Student> student = repo.findById(id);
         if (student.isPresent()){
             return student.get();
         }
-        return null;
+        throw new NotFoundException("User Not Found!");
     }
 
     public Page<Student> getAllStudents(int page , int size){

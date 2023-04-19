@@ -2,9 +2,9 @@ package com.mvcspring.hotcat.contoller;
 
 import com.mvcspring.hotcat.dao.StudentDao;
 import com.mvcspring.hotcat.exception.StandardResponse;
+import com.mvcspring.hotcat.exception.NotFoundException;
 import com.mvcspring.hotcat.model.Student;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +38,7 @@ public class StudentController {
             @RequestParam String name,
             @RequestParam String address,
             @RequestParam int marks
-    ){
+    ) throws NotFoundException {
         return new ResponseEntity<>(
                 new StandardResponse(
                         200,
@@ -49,7 +49,7 @@ public class StudentController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<StandardResponse> deleteStudent(@PathVariable String id){
+    public ResponseEntity<StandardResponse> deleteStudent(@PathVariable String id) throws NotFoundException {
         return new ResponseEntity<>(
                 new StandardResponse(
                         200,
@@ -60,7 +60,7 @@ public class StudentController {
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<StandardResponse> getStudent(@PathVariable String id){
+    public ResponseEntity<StandardResponse> getStudent(@PathVariable String id) throws NotFoundException {
         return new ResponseEntity<>(
                 new StandardResponse(
                         200,
